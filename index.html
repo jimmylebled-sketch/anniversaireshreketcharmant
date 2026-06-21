@@ -144,9 +144,13 @@ window.addEventListener("DOMContentLoaded", () => {
             .replace(/\s+/g, " ");
     }
 
-    // "Grand Méchant Loup" -> "grand-mechant-loup.png"
+    // Gestion robuste des noms de fichiers images
     function getFilenameFromRole(roleName) {
-        return normalize(roleName).replace(/\s+/g, "-") + ".png";
+        return normalize(roleName)
+            .replace(/['’‘]/g, "-") // Remplace toutes les apostrophes par un tiret
+            .replace(/\s+/g, "-")   // Remplace les espaces par des tirets
+            .replace(/-+/g, "-")    // Évite les doubles tirets
+            .trim() + ".png";
     }
 
     const cleanRoles = {};
