@@ -95,9 +95,26 @@ button:hover {
     from {
         transform: scale(0.5) rotate(-5deg);
         opacity: 0;
-    }
+    }https://drive.google.com/drive/folders/1bym_RqT9bz8Dy0OeoY-mUuLcLYasgT_7
     to {
         transform: scale(1) rotate(0);
         opacity: 1;
     }
+}
+#welcomeScreen {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #111; /* Fond sombre style Shrek */
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999;
+}
+
+#startBtn {
+    padding: 15px 30px;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #6c8c4c; /* Vert Shrek */
+    color: white;
+    border: none;
+    border-radius: 8px;
 }
