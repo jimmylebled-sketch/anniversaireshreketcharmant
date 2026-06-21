@@ -5,14 +5,25 @@ window.addEventListener("DOMContentLoaded", () => {
     const click = document.getElementById("click");
     const magic = document.getElementById("magic");
 
-    // On pré-règle le volume de la musique de fond
-    music.volume = 0.3;
+    // On pré-règle le volume de la musique de fond si elle existe
+    if (music) music.volume = 0.3;
 
     /* 🏰 Clic sur l'écran d'accueil */
     document.getElementById("startBtn").onclick = () => {
-        click.currentTime = 0;
-        click.play();
-        music.play();
+        // Sécurité : On essaie de lancer le clic et la musique
+        try {
+            if (click) {
+                click.currentTime = 0;
+                click.play().catch(e => console.log("Bruit de clic bloqué ou introuvable"));
+            }
+            if (music) {
+                music.play().catch(e => console.log("Musique bloquée ou introuvable"));
+            }
+        } catch (error) {
+            console.log("Erreur audio ignorée pour éviter le blocage");
+        }
+        
+        // Quoi qu'il arrive, on cache l'écran d'accueil !
         document.getElementById("welcomeScreen").classList.add("hidden");
     };
 
@@ -74,17 +85,15 @@ window.addEventListener("DOMContentLoaded", () => {
         "marie le goadec": "Merlin"
     };
 
-    // Nettoie l'écriture (accents, majuscules, espaces superflus)
     function normalize(str) {
         return str
             .toLowerCase()
             .trim()
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "")
-            .replace(/\s+/g, " "); // Remplace les espaces multiples par un seul
+            .replace(/\s+/g, " ");
     }
 
-    // ✨ NOUVEAU : On crée une liste de rôles entièrement "nettoyée" pour la recherche
     const cleanRoles = {};
     for (let key in roles) {
         cleanRoles[normalize(key)] = roles[key];
@@ -92,32 +101,35 @@ window.addEventListener("DOMContentLoaded", () => {
 
     /* 🤠 bouton découverte */
     document.getElementById("discover").onclick = () => {
-        music.play();
-        click.currentTime = 0;
-        click.play();
+        try {
+            if (music) music.play().catch(e => {});
+            if (click) {
+                click.currentTime = 0;
+                click.play().catch(e => {});
+            }
+        } catch (e) {}
 
-        // 1. On récupère et nettoie ce que l'invité a tapé
         const userInput = normalize(document.getElementById("name").value);
-        
-        // 2. Recherche intelligente dans la liste nettoyée (Prénom Nom)
         let role = cleanRoles[userInput];
 
         if (!role) {
-            // Si on ne trouve pas directement, on tente d'inverser les deux mots
             const words = userInput.split(" ");
             if (words.length === 2) {
-                const invertedInput = `${words[1]} ${words[0]}`; // Devient "nom prénom"
+                const invertedInput = `${words[1]} ${words[0]}`;
                 role = cleanRoles[invertedInput];
             }
         }
 
-        // 3. Affichage de l'écran du livre
         document.getElementById("intro").classList.add("hidden");
         document.getElementById("bookScreen").classList.remove("hidden");
 
         setTimeout(() => {
-            magic.currentTime = 0;
-            magic.play();
+            try {
+                if (magic) {
+                    magic.currentTime = 0;
+                    magic.play().catch(e => {});
+                }
+            } catch (e) {}
 
             document.getElementById("role").innerText =
                 role ? role : "Inconnu du royaume...";
