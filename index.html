@@ -4,23 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fort Fort Lointain</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+
 <div id="welcomeScreen">
     <button id="startBtn">🏰 Entrer dans Fort Fort Lointain</button>
 </div>
 
 <audio id="music" src="music.mp3" loop preload="auto"></audio>
+<audio id="clickSound" src="click.mp3" preload="auto"></audio>
+<audio id="magicSound" src="magic.mp3" preload="auto"></audio>
 
 <div id="intro">
-
     <img src="castle.jpg" class="castle">
-
     <h1>🏰 Fort Fort Lointain</h1>
-
     <p class="subtitle">
         Bienvenue dans le royaume...
         <br><br>
@@ -29,36 +28,177 @@
         Découvre le tien.
     </p>
 
-    <input
-        id="name"
-        type="text"
-        placeholder="Ton prénom et ton nom">
-
-    <button id="discover">
-        Découvrir mon rôle
-    </button>
-
+    <input id="name" type="text" placeholder="Ton prénom et ton nom">
+    <button id="discover">Découvrir mon rôle</button>
 </div>
 
 <div id="bookScreen" class="hidden">
-
-    <img src="book.jpg" id="book">
-
+    <img src="" id="roleImage" alt="Ton rôle" class="castle" style="max-width: 80%; border-radius: 15px; margin-bottom: 20px;">
+    
     <div id="roleContainer">
-
         <h2>Ton rôle est...</h2>
-
         <h1 id="role"></h1>
-
-        <p>
-            🤫 Garde ce rôle secret jusqu'au début de la soirée.
-        </p>
-
+        <p>🤫 Garde ce rôle secret jusqu'au début de la soirée.</p>
     </div>
-
 </div>
 
-<script src="script.js"></script>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+
+    const music = document.getElementById("music");
+    const clickSound = document.getElementById("clickSound");
+    const magicSound = document.getElementById("magicSound");
+
+    if (music) music.volume = 0.3;
+
+    /* 🏰 CLIC ENTRER DANS FORT FORT LOINTAIN */
+    document.getElementById("startBtn").addEventListener("click", () => {
+        // Changement d'écran immédiat pour éviter toute latence visuelle
+        document.getElementById("welcomeScreen").classList.add("hidden");
+
+        // Lecture sécurisée des sons
+        try {
+            if (clickSound) {
+                if (clickSound.readyState > 0) clickSound.currentTime = 0;
+                clickSound.play().catch(e => console.log("Clic bloqué"));
+            }
+            if (music) {
+                music.play().catch(e => console.log("Musique bloquée"));
+            }
+        } catch (error) {}
+    });
+
+    // Base de données des invités
+    const roles = {
+        "quentin yvé": "Nain joyeux",
+        "clara douère": "Sorcière",
+        "pierre sinoquet": "Villageois",
+        "nicolas lamblin": "Garde Far Far Away",
+        "chloé biarnes": "Petit cochon Nouf Nouf",
+        "margot jacques": "Villageoise",
+        "philippine dero": "Sorcière",
+        "titia juif": "Fée Pâquerette",
+        "clara fizet": "Sorcière",
+        "maud reynes": "Fée Flora",
+        "thibault maurice": "Nain Simplet",
+        "hector joulin": "Nain Prof",
+        "malik el hassiny": "Petit cochon Naf Naf",
+        "alhou": "Villageois",
+        "jade pavaut": "Petit cochon Nif Nif",
+        "antoine renault": "Arthur",
+        "yann walbrercq": "Hansel",
+        "louise morisse": "Sorcière",
+        "alizée breton": "Fée Pimprenelle",
+        "gabin nicolas": "Mini Arthur",
+        "eugénie molina": "Blanche Neige",
+        "andréa": "Gretel",
+        "gilles rivières": "Papatissier",
+        "julien nicolas": "Nain Grincheux",
+        "martin mésonier": "Nain Atchoum",
+        "alexis boinet": "Grand Méchant Loup",
+        "guillaume lamarche": "Doris",
+        "ivan vicente": "Souris aveugle",
+        "mathis breton": "Bourreau",
+        "kévin martin": "Pinocchio",
+        "morgane sanchez torres": "Petit Chaperon Rouge",
+        "sébastien vicente": "Souris aveugle",
+        "léa bailleul": "Marraine la Bonne Fée",
+        "morgane breton": "Cendrillon",
+        "bastien stéphan": "Villageois",
+        "kévin arhel": "Lord Farquaad",
+        "bérénice lebreton": "Dragonne",
+        "antoine crevel": "Chat Potté",
+        "hadrien grivart": "Grand Biscuit",
+        "lancelot mésonier": "Robin des Bois",
+        "pauline robin": "Belle au bois dormant",
+        "arnaud mouilleron": "L’Âne",
+        "justinne lannelongue": "Kitty",
+        "antoine duval": "Petit Biscuit",
+        "thomas stachowiak": "Souris aveugle",
+        "amaury mésonier": "Shrek",
+        "astrid barbant": "Raiponce",
+        "pauline bennetot": "Reine Lilliane",
+        "thomas jean": "Roi Harold",
+        "martin lavi": "Tracassin",
+        "jimmy lebled": "Charmant",
+        "axelle breton": "Fiona",
+        "anne-laure folliot": "Sorcière",
+        "curtis gomis": "Miroir magique",
+        "marie le goadec": "Merlin"
+    };
+
+    // Fonction de nettoyage universelle (accents, majuscules, espaces)
+    function normalize(str) {
+        return str
+            .toLowerCase()
+            .trim()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/\s+/g, " ");
+    }
+
+    // Fonction pour transformer le nom du rôle en nom de fichier image propre
+    // Exemple : "Grand Méchant Loup" -> "grand-mechant-loup.png"
+    function getFilenameFromRole(roleName) {
+        return normalize(roleName).replace(/\s+/g, "-") + ".png";
+    }
+
+    // Préparation de la liste nettoyée pour éviter le bug des É/È
+    const cleanRoles = {};
+    for (let key in roles) {
+        cleanRoles[normalize(key)] = roles[key];
+    }
+
+    /* 🤠 CLIC DÉCOUVRIR MON RÔLE */
+    document.getElementById("discover").addEventListener("click", () => {
+        try {
+            if (clickSound) {
+                if (clickSound.readyState > 0) clickSound.currentTime = 0;
+                clickSound.play().catch(e => {});
+            }
+        } catch (e) {}
+
+        const userInput = normalize(document.getElementById("name").value);
+        let role = cleanRoles[userInput];
+
+        // Secours si Nom/Prénom inversé
+        if (!role) {
+            const words = userInput.split(" ");
+            if (words.length === 2) {
+                const invertedInput = `${words[1]} ${words[0]}`;
+                role = cleanRoles[invertedInput];
+            }
+        }
+
+        // Préparation de l'affichage
+        const roleImgElement = document.getElementById("roleImage");
+        if (role) {
+            document.getElementById("role").innerText = role;
+            // On cible l'image dans le dossier roles/ (ex: roles/fiona.png)
+            roleImgElement.src = "roles/" + getFilenameFromRole(role);
+            roleImgElement.style.display = "block";
+        } else {
+            document.getElementById("role").innerText = "Inconnu du royaume...";
+            roleImgElement.style.display = "none"; // Cache l'image si non trouvé
+        }
+
+        // Bascule visuelle des écrans
+        document.getElementById("intro").classList.add("hidden");
+        document.getElementById("bookScreen").classList.remove("hidden");
+
+        // Son magique décalé
+        setTimeout(() => {
+            try {
+                if (magicSound) {
+                    if (magicSound.readyState > 0) magicSound.currentTime = 0;
+                    magicSound.play().catch(e => {});
+                }
+            } catch (e) {}
+        }, 800);
+    });
+
+});
+</script>
 
 </body>
 </html>
