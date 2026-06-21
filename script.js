@@ -1,60 +1,18 @@
 window.addEventListener("DOMContentLoaded", () => {
 
-    // 🧠 Création du contexte audio ultra-rapide (Web Audio API)
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioCtx = new AudioContext();
-
-    // Dictionnaire pour stocker les fichiers décodés en mémoire vive
-    const soundBuffers = {};
-
-    // Fonction pour charger un son directement dans la RAM
-    async function loadSound(name, url) {
-        try {
-            const response = await fetch(url);
-            const arrayBuffer = await response.arrayBuffer();
-            soundBuffers[name] = await audioCtx.decodeAudioData(arrayBuffer);
-        } catch (e) {
-            console.error("Erreur de chargement du son : " + name, e);
-        }
-    }
-
-    // On lance le chargement immédiat des bruitages en tâche de fond
-    loadSound("click", "click.mp3");
-    loadSound("magic", "magic.mp3");
-
-    // Fonction pour jouer un bruitage instantanément sans AUCUNE latence
-    function playInstantSound(name) {
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-        const buffer = soundBuffers[name];
-        if (buffer) {
-            const soundSource = audioCtx.createBufferSource();
-            soundSource.buffer = buffer;
-            soundSource.connect(audioCtx.destination);
-            soundSource.start(0); // Lancement à la micro-seconde près
-        }
-    }
-
-    /* 🎵 La musique de fond reste sur l'ancienne méthode car elle est longue, 
-       mais on la récupère ici */
+    /* 🎵 Récupération de tes 3 nouveaux sons */
     const music = document.getElementById("music");
+    const click = document.getElementById("click");
+    const magic = document.getElementById("magic");
+
+    // On pré-règle le volume de la musique de fond
     music.volume = 0.3;
 
     /* 🏰 Clic sur l'écran d'accueil */
     document.getElementById("startBtn").onclick = () => {
-        // Active le contexte audio (requis par les navigateurs mobiles)
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-
-        // ⚡ Bruit de clic instantané depuis la RAM
-        playInstantSound("click");
-
-        // Lancement immédiat de la musique de fond
+        click.currentTime = 0;
+        click.play();
         music.play();
-        
-        // Cache l'écran d'accueil
         document.getElementById("welcomeScreen").classList.add("hidden");
     };
 
@@ -116,32 +74,50 @@ window.addEventListener("DOMContentLoaded", () => {
         "marie le goadec": "Merlin"
     };
 
+    // Nettoie l'écriture (accents, majuscules, espaces superflus)
     function normalize(str) {
         return str
             .toLowerCase()
             .trim()
             .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "");
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/\s+/g, " "); // Remplace les espaces multiples par un seul
+    }
+
+    // ✨ NOUVEAU : On crée une liste de rôles entièrement "nettoyée" pour la recherche
+    const cleanRoles = {};
+    for (let key in roles) {
+        cleanRoles[normalize(key)] = roles[key];
     }
 
     /* 🤠 bouton découverte */
     document.getElementById("discover").onclick = () => {
-        // On s'assure que la musique tourne toujours bien
         music.play();
+        click.currentTime = 0;
+        click.play();
 
-        // ⚡ Bruit de clic instantané depuis la RAM
-        playInstantSound("click");
+        // 1. On récupère et nettoie ce que l'invité a tapé
+        const userInput = normalize(document.getElementById("name").value);
+        
+        // 2. Recherche intelligente dans la liste nettoyée (Prénom Nom)
+        let role = cleanRoles[userInput];
 
-        const name = normalize(document.getElementById("name").value);
-        const role = roles[name];
+        if (!role) {
+            // Si on ne trouve pas directement, on tente d'inverser les deux mots
+            const words = userInput.split(" ");
+            if (words.length === 2) {
+                const invertedInput = `${words[1]} ${words[0]}`; // Devient "nom prénom"
+                role = cleanRoles[invertedInput];
+            }
+        }
 
-        // Cache l'écran d'intro et affiche le livre
+        // 3. Affichage de l'écran du livre
         document.getElementById("intro").classList.add("hidden");
         document.getElementById("bookScreen").classList.remove("hidden");
 
         setTimeout(() => {
-            // ⚡ Son magique instantané depuis la RAM
-            playInstantSound("magic");
+            magic.currentTime = 0;
+            magic.play();
 
             document.getElementById("role").innerText =
                 role ? role : "Inconnu du royaume...";
