@@ -5,13 +5,16 @@ window.addEventListener("DOMContentLoaded", () => {
     const click = document.getElementById("click");
     const magic = document.getElementById("magic");
 
+    // On pré-règle le volume de la musique pour ne pas perdre de temps au clic
+    music.volume = 0.3;
+
     /* 🏰 Clic sur l'écran d'accueil */
     document.getElementById("startBtn").onclick = () => {
-        // 🔊 On lance le bruit de clic immédiatement !
+        // ⚡ Suppression instantanée de la latence pour le clic
+        click.currentTime = 0;
         click.play();
 
-        // On configure et lance la musique de fond
-        music.volume = 0.3;
+        // ⚡ Lancement immédiat de la musique
         music.play();
         
         // Cache l'écran d'accueil proprement avec la classe hidden
@@ -86,13 +89,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     /* 🤠 bouton découverte */
     document.getElementById("discover").onclick = () => {
-        
-        // La musique tourne déjà, on s'assure juste qu'elle joue bien
-        music.volume = 0.3;
-        music.play();
-
-        // 🔊 On lance aussi le bruit de clic ici
+        // ⚡ On force la réinitialisation et la lecture instantanée du clic
+        click.currentTime = 0;
         click.play();
+
         const name = normalize(document.getElementById("name").value);
         const role = roles[name];
 
@@ -101,6 +101,8 @@ window.addEventListener("DOMContentLoaded", () => {
         document.getElementById("bookScreen").classList.remove("hidden");
 
         setTimeout(() => {
+            // ⚡ Lecture instantanée du son magique sans décalage
+            magic.currentTime = 0;
             magic.play();
 
             document.getElementById("role").innerText =
