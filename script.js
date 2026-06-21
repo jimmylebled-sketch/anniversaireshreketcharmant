@@ -42,7 +42,7 @@ window.addEventListener("DOMContentLoaded", () => {
         "thibault maurice": "Nain Simplet",
         "hector joulin": "Nain Prof",
         "malik el hassiny": "Petit cochon Naf Naf",
-        "alhou": "Villageois",
+        "alhou djitté": "Villageois",
         "jade pavaut": "Petit cochon Nif Nif",
         "antoine renault": "Arthur",
         "yann walbrercq": "Hansel",
