@@ -7,6 +7,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     /* 🏰 Clic sur l'écran d'accueil */
     document.getElementById("startBtn").onclick = () => {
+        // 🔊 On lance le bruit de clic immédiatement !
+        click.play();
+
+        // On configure et lance la musique de fond
         music.volume = 0.3;
         music.play();
         
@@ -87,7 +91,7 @@ window.addEventListener("DOMContentLoaded", () => {
         music.volume = 0.3;
         music.play();
 
-        // On lance le bruit de clic
+        // 🔊 On lance aussi le bruit de clic ici
         click.play();
         const name = normalize(document.getElementById("name").value);
         const role = roles[name];
