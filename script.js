@@ -1,30 +1,37 @@
 window.addEventListener("DOMContentLoaded", () => {
 
-    /* 🎵 Récupération de tes 3 nouveaux sons */
+    /* 🎵 Récupération de tes 3 sons */
     const music = document.getElementById("music");
     const click = document.getElementById("click");
     const magic = document.getElementById("magic");
 
-    // On pré-règle le volume de la musique de fond si elle existe
+    // Réglage initial du volume
     if (music) music.volume = 0.3;
 
     /* 🏰 Clic sur l'écran d'accueil */
     document.getElementById("startBtn").onclick = () => {
-        // Sécurité + Force le déclenchement sur Mobile
+        // ✨ L'ASTUCE MOBILE : On force le décodage et la lecture immédiate des 3 sons
+        // au premier clic physique pour les autoriser sur smartphone.
         try {
             if (click) {
-                click.load(); // ⚡ Force le téléphone à charger le fichier nettoyé immédiatement
                 click.currentTime = 0;
-                click.play().catch(e => console.log("Bruit de clic bloqué ou introuvable"));
+                click.play().catch(e => console.log("Clic init"));
             }
             if (music) {
-                music.play().catch(e => console.log("Musique bloquée ou introuvable"));
+                music.play().catch(e => console.log("Musique init"));
+            }
+            if (magic) {
+                // On "lance" un micro-instant de magie muet pour débloquer le son sur iPhone
+                magic.play().then(() => {
+                    magic.pause();
+                    magic.currentTime = 0;
+                }).catch(e => console.log("Magic init"));
             }
         } catch (error) {
-            console.log("Erreur audio ignorée pour éviter le blocage");
+            console.log("Erreur d'initialisation audio ignorée");
         }
         
-        // Quoi qu'il arrive, on cache l'écran d'accueil !
+        // On cache l'écran d'accueil
         document.getElementById("welcomeScreen").classList.add("hidden");
     };
 
@@ -42,7 +49,7 @@ window.addEventListener("DOMContentLoaded", () => {
         "thibault maurice": "Nain Simplet",
         "hector joulin": "Nain Prof",
         "malik el hassiny": "Petit cochon Naf Naf",
-        "alhou djitté": "Villageois",
+        "alhou": "Villageois",
         "jade pavaut": "Petit cochon Nif Nif",
         "antoine renault": "Arthur",
         "yann walbrercq": "Hansel",
@@ -103,9 +110,7 @@ window.addEventListener("DOMContentLoaded", () => {
     /* 🤠 bouton découverte */
     document.getElementById("discover").onclick = () => {
         try {
-            if (music) music.play().catch(e => {});
             if (click) {
-                click.load(); // ⚡ Force aussi le rechargement ici pour le deuxième clic mobile
                 click.currentTime = 0;
                 click.play().catch(e => {});
             }
@@ -128,7 +133,6 @@ window.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
             try {
                 if (magic) {
-                    magic.load(); // ⚡ Force le chargement du son magique
                     magic.currentTime = 0;
                     magic.play().catch(e => {});
                 }
