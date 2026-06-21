@@ -1,0 +1,103 @@
+body {
+    margin: 0;
+    font-family: Georgia, serif;
+    color: white;
+    text-align: center;
+    background: black;
+}
+
+/* 🌲 ÉCRAN D'INTRO */
+#intro {
+    height: 100vh;
+    background: url("background.jpg") center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.castle {
+    width: 180px;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.6));
+}
+
+h1 {
+    font-size: 40px;
+    text-shadow: 0 0 10px black;
+}
+
+.subtitle {
+    max-width: 500px;
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+/* ✍️ INPUT */
+input {
+    padding: 12px;
+    width: 250px;
+    border-radius: 10px;
+    border: none;
+    text-align: center;
+}
+
+/* 🎭 BOUTON */
+button {
+    padding: 12px 20px;
+    margin-top: 10px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    background: gold;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* 📖 ÉCRAN LIVRE */
+#bookScreen {
+    height: 100vh;
+    background: radial-gradient(circle, #2b3d2b, #0f1a0f);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* 📖 LIVRE */
+#book {
+    width: 300px;
+    animation: openBook 1.2s ease forwards;
+}
+
+/* 🎭 TEXTE RÔLE */
+#roleContainer {
+    margin-top: 20px;
+}
+
+#role {
+    font-size: 40px;
+    color: gold;
+    text-shadow: 0 0 10px black;
+}
+
+/* ❌ cacher */
+.hidden {
+    display: none;
+}
+
+/* ✨ ANIMATION LIVRE */
+@keyframes openBook {
+    from {
+        transform: scale(0.5) rotate(-5deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
