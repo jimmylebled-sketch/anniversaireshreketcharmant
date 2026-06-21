@@ -95,12 +95,13 @@ button:hover {
     from {
         transform: scale(0.5) rotate(-5deg);
         opacity: 0;
-    }https://drive.google.com/drive/folders/1bym_RqT9bz8Dy0OeoY-mUuLcLYasgT_7
+    }
     to {
         transform: scale(1) rotate(0);
         opacity: 1;
     }
 }
+
 #welcomeScreen {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -117,4 +118,53 @@ button:hover {
     color: white;
     border: none;
     border-radius: 8px;
+}
+
+/* 📱 OPTIMISATIONS POUR ÉCRANS MOBILES (Max 600px) */
+@media (max-width: 600px) {
+    
+    /* 1. On évite que le contenu soit coupé par les barres du navigateur */
+    #intro, #bookScreen, #welcomeScreen {
+        height: 100dvh; /* Utilise la hauteur dynamique spéciale mobile */
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    /* 2. On réduit la taille des gros titres pour qu'ils tiennent sur une ligne */
+    h1 {
+        font-size: 28px;
+    }
+
+    #role {
+        font-size: 32px;
+    }
+
+    /* 3. On ajuste la taille du château et du livre */
+    .castle {
+        width: 120px;
+    }
+
+    #book {
+        width: 80%; /* Le livre prend une taille proportionnelle à l'écran */
+        max-width: 260px;
+    }
+
+    /* 4. On s'assure que le texte reste lisible et ne colle pas aux bords */
+    .subtitle {
+        font-size: 16px;
+        line-height: 1.4;
+    }
+
+    input {
+        width: 85%; /* L'input s'adapte à la largeur du téléphone */
+        max-width: 280px;
+        font-size: 16px; /* Évite le zoom automatique forcé sur iPhone */
+    }
+
+    button, #startBtn {
+        width: 85%;
+        max-width: 280px;
+        padding: 14px;
+        font-size: 18px;
+    }
 }
