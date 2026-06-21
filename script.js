@@ -10,8 +10,8 @@ window.addEventListener("DOMContentLoaded", () => {
         music.volume = 0.3;
         music.play();
         
-        // Cache l'écran d'accueil
-        document.getElementById("welcomeScreen").style.display = "none";
+        // Cache l'écran d'accueil proprement avec la classe hidden
+        document.getElementById("welcomeScreen").classList.add("hidden");
     };
 
     const roles = {
@@ -92,7 +92,8 @@ window.addEventListener("DOMContentLoaded", () => {
         const name = normalize(document.getElementById("name").value);
         const role = roles[name];
 
-        document.getElementById("intro").style.display = "none";
+        // Cache l'écran d'intro et affiche le livre avec les classes
+        document.getElementById("intro").classList.add("hidden");
         document.getElementById("bookScreen").classList.remove("hidden");
 
         setTimeout(() => {
