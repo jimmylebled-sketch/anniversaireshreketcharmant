@@ -85,18 +85,18 @@ window.addEventListener("DOMContentLoaded", () => {
         "chloé biarnes": "Petit cochon Nouf Nouf",
         "margot jacques": "Villageoise",
         "philippine dero": "Sorcière",
-        "titia juif": "Fée Pâquerette",
+        "titia juif": "Fée Pâquerette verte",
         "clara fizet": "Sorcière",
-        "maud reynes": "Fée Flora",
+        "maud reynes": "Fée Flora rose",
         "thibault maurice": "Nain Simplet",
         "hector joulin": "Nain Prof",
         "malik el hassiny": "Petit cochon Naf Naf",
-        "alhou": "Villageois",
+        "alhou djitté": "Villageois",
         "jade pavaut": "Petit cochon Nif Nif",
         "antoine renault": "Arthur",
         "yann walbrercq": "Hansel",
         "louise morisse": "Sorcière",
-        "alizée breton": "Fée Pimprenelle",
+        "alizée breton": "Fée Pimprenelle bleu",
         "gabin nicolas": "Mini Arthur",
         "eugénie molina": "Blanche Neige",
         "andréa": "Gretel",
@@ -130,4 +130,75 @@ window.addEventListener("DOMContentLoaded", () => {
         "martin lavi": "Tracassin",
         "jimmy lebled": "Charmant",
         "axelle breton": "Fiona",
-        "anne-laure
+        "anne-laure folliot": "Sorcière",
+        "curtis gomis": "Miroir magique",
+        "marie le goadec": "Merlin"
+    };
+
+    function normalize(str) {
+        return str
+            .toLowerCase()
+            .trim()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/\s+/g, " ");
+    }
+
+    // "Grand Méchant Loup" -> "grand-mechant-loup.png"
+    function getFilenameFromRole(roleName) {
+        return normalize(roleName).replace(/\s+/g, "-") + ".png";
+    }
+
+    const cleanRoles = {};
+    for (let key in roles) {
+        cleanRoles[normalize(key)] = roles[key];
+    }
+
+    /* 🤠 CLIC DÉCOUVRIR MON RÔLE */
+    document.getElementById("discover").addEventListener("click", () => {
+        try {
+            if (clickSound) {
+                if (clickSound.readyState > 0) clickSound.currentTime = 0;
+                clickSound.play().catch(e => {});
+            }
+        } catch (e) {}
+
+        const userInput = normalize(document.getElementById("name").value);
+        let role = cleanRoles[userInput];
+
+        if (!role) {
+            const words = userInput.split(" ");
+            if (words.length === 2) {
+                const invertedInput = `${words[1]} ${words[0]}`;
+                role = cleanRoles[invertedInput];
+            }
+        }
+
+        const roleImgElement = document.getElementById("roleImage");
+        if (role) {
+            document.getElementById("role").innerText = role;
+            roleImgElement.src = "roles/" + getFilenameFromRole(role);
+            roleImgElement.style.display = "block";
+        } else {
+            document.getElementById("role").innerText = "Inconnu du royaume...";
+            roleImgElement.style.display = "none";
+        }
+
+        document.getElementById("intro").classList.add("hidden");
+        document.getElementById("bookScreen").classList.remove("hidden");
+
+        setTimeout(() => {
+            try {
+                if (magicSound) {
+                    if (magicSound.readyState > 0) magicSound.currentTime = 0;
+                    magicSound.play().catch(e => {});
+                }
+            } catch (e) {}
+        }, 800);
+    });
+
+});
+</script>
+
+</body>
+</html>
