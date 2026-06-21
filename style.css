@@ -87,7 +87,7 @@ button:hover {
 
 /* ❌ cacher */
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 /* ✨ ANIMATION LIVRE */
@@ -130,41 +130,9 @@ button:hover {
         box-sizing: border-box;
     }
 
-    /* 2. On réduit la taille des gros titres pour qu'ils tiennent sur une ligne */
-    h1 {
-        font-size: 28px;
+    /* 🛑 Sécurité : force le masquage des écrans sur mobile quand la classe hidden est ajoutée */
+    #intro.hidden, #bookScreen.hidden, #welcomeScreen.hidden {
+        display: none !important;
     }
 
-    #role {
-        font-size: 32px;
-    }
-
-    /* 3. On ajuste la taille du château et du livre */
-    .castle {
-        width: 120px;
-    }
-
-    #book {
-        width: 80%; /* Le livre prend une taille proportionnelle à l'écran */
-        max-width: 260px;
-    }
-
-    /* 4. On s'assure que le texte reste lisible et ne colle pas aux bords */
-    .subtitle {
-        font-size: 16px;
-        line-height: 1.4;
-    }
-
-    input {
-        width: 85%; /* L'input s'adapte à la largeur du téléphone */
-        max-width: 280px;
-        font-size: 16px; /* Évite le zoom automatique forcé sur iPhone */
-    }
-
-    button, #startBtn {
-        width: 85%;
-        max-width: 280px;
-        padding: 14px;
-        font-size: 18px;
-    }
-}
+    /* 2. On réduit la taille des gros titres pour
