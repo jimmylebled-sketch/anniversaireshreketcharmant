@@ -69,17 +69,15 @@ const music = document.getElementById("music");
 const click = document.getElementById("click");
 const magic = document.getElementById("magic");
 
-/* ▶️ musique au chargement */
-window.onload = () => {
+/* 🤠 bouton découverte */
+document.getElementById("discover").onclick = () => {
+    
+    // On baisse le volume et on lance la musique de fond
     music.volume = 0.3;
     music.play();
-};
 
-/* 🎭 bouton découverte */
-document.getElementById("discover").onclick = () => {
-
+    // On lance le bruit de clic
     click.play();
-
     const name = normalize(document.getElementById("name").value);
     const role = roles[name];
 
