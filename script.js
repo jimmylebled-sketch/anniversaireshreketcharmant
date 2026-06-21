@@ -1,4 +1,19 @@
 window.addEventListener("DOMContentLoaded", () => {
+
+    /* 🎵 Récupération des sons en premier */
+    const music = document.getElementById("music");
+    const click = document.getElementById("click");
+    const magic = document.getElementById("magic");
+
+    /* 🏰 Clic sur l'écran d'accueil */
+    document.getElementById("startBtn").onclick = () => {
+        music.volume = 0.3;
+        music.play();
+        
+        // Cache l'écran d'accueil
+        document.getElementById("welcomeScreen").style.display = "none";
+    };
+
     const roles = {
         "quentin yvé": "Nain joyeux",
         "clara douère": "Sorcière",
@@ -65,15 +80,10 @@ window.addEventListener("DOMContentLoaded", () => {
             .replace(/[\u0300-\u036f]/g, "");
     }
 
-    /* 🎵 sons */
-    const music = document.getElementById("music");
-    const click = document.getElementById("click");
-    const magic = document.getElementById("magic");
-
     /* 🤠 bouton découverte */
     document.getElementById("discover").onclick = () => {
         
-        // On baisse le volume et on lance la musique de fond
+        // La musique tourne déjà, on s'assure juste qu'elle joue bien
         music.volume = 0.3;
         music.play();
 
