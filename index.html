@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fort Fort Lointain</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Ajout du background global directement ici pour assurer son chargement */
+        body {
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+    </style>
 </head>
 
 <body>
@@ -53,10 +63,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
     /* 🏰 CLIC ENTRER DANS FORT FORT LOINTAIN */
     document.getElementById("startBtn").addEventListener("click", () => {
-        // Changement d'écran immédiat pour éviter toute latence visuelle
         document.getElementById("welcomeScreen").classList.add("hidden");
 
-        // Lecture sécurisée des sons
         try {
             if (clickSound) {
                 if (clickSound.readyState > 0) clickSound.currentTime = 0;
@@ -122,83 +130,4 @@ window.addEventListener("DOMContentLoaded", () => {
         "martin lavi": "Tracassin",
         "jimmy lebled": "Charmant",
         "axelle breton": "Fiona",
-        "anne-laure folliot": "Sorcière",
-        "curtis gomis": "Miroir magique",
-        "marie le goadec": "Merlin"
-    };
-
-    // Fonction de nettoyage universelle (accents, majuscules, espaces)
-    function normalize(str) {
-        return str
-            .toLowerCase()
-            .trim()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/\s+/g, " ");
-    }
-
-    // Fonction pour transformer le nom du rôle en nom de fichier image propre
-    // Exemple : "Grand Méchant Loup" -> "grand-mechant-loup.png"
-    function getFilenameFromRole(roleName) {
-        return normalize(roleName).replace(/\s+/g, "-") + ".png";
-    }
-
-    // Préparation de la liste nettoyée pour éviter le bug des É/È
-    const cleanRoles = {};
-    for (let key in roles) {
-        cleanRoles[normalize(key)] = roles[key];
-    }
-
-    /* 🤠 CLIC DÉCOUVRIR MON RÔLE */
-    document.getElementById("discover").addEventListener("click", () => {
-        try {
-            if (clickSound) {
-                if (clickSound.readyState > 0) clickSound.currentTime = 0;
-                clickSound.play().catch(e => {});
-            }
-        } catch (e) {}
-
-        const userInput = normalize(document.getElementById("name").value);
-        let role = cleanRoles[userInput];
-
-        // Secours si Nom/Prénom inversé
-        if (!role) {
-            const words = userInput.split(" ");
-            if (words.length === 2) {
-                const invertedInput = `${words[1]} ${words[0]}`;
-                role = cleanRoles[invertedInput];
-            }
-        }
-
-        // Préparation de l'affichage
-        const roleImgElement = document.getElementById("roleImage");
-        if (role) {
-            document.getElementById("role").innerText = role;
-            // On cible l'image dans le dossier roles/ (ex: roles/fiona.png)
-            roleImgElement.src = "roles/" + getFilenameFromRole(role);
-            roleImgElement.style.display = "block";
-        } else {
-            document.getElementById("role").innerText = "Inconnu du royaume...";
-            roleImgElement.style.display = "none"; // Cache l'image si non trouvé
-        }
-
-        // Bascule visuelle des écrans
-        document.getElementById("intro").classList.add("hidden");
-        document.getElementById("bookScreen").classList.remove("hidden");
-
-        // Son magique décalé
-        setTimeout(() => {
-            try {
-                if (magicSound) {
-                    if (magicSound.readyState > 0) magicSound.currentTime = 0;
-                    magicSound.play().catch(e => {});
-                }
-            } catch (e) {}
-        }, 800);
-    });
-
-});
-</script>
-
-</body>
-</html>
+        "anne-laure
