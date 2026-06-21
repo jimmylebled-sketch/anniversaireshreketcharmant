@@ -10,9 +10,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     /* 🏰 Clic sur l'écran d'accueil */
     document.getElementById("startBtn").onclick = () => {
-        // Sécurité : On essaie de lancer le clic et la musique
+        // Sécurité + Force le déclenchement sur Mobile
         try {
             if (click) {
+                click.load(); // ⚡ Force le téléphone à charger le fichier nettoyé immédiatement
                 click.currentTime = 0;
                 click.play().catch(e => console.log("Bruit de clic bloqué ou introuvable"));
             }
@@ -104,6 +105,7 @@ window.addEventListener("DOMContentLoaded", () => {
         try {
             if (music) music.play().catch(e => {});
             if (click) {
+                click.load(); // ⚡ Force aussi le rechargement ici pour le deuxième clic mobile
                 click.currentTime = 0;
                 click.play().catch(e => {});
             }
@@ -126,6 +128,7 @@ window.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
             try {
                 if (magic) {
+                    magic.load(); // ⚡ Force le chargement du son magique
                     magic.currentTime = 0;
                     magic.play().catch(e => {});
                 }
